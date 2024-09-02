@@ -1,14 +1,10 @@
 <div class="d-flex flex-column align-items-center">
-  @if (canShowNewVacancyButton()) {
-    <button (click)="openCreateVacancyModal()" class="btn btn-success mb-3 mt-3">
-      Adicionar nova vaga
-    </button>
-  }
   @for (application of applications; track application) {
     <div class="card mb-3" style="width: 18rem;">
       <div class="card-body">
-        <h5 class="card-title">{{ application. }}</h5>
-        <p class="card-text">{{ vacancy.description }}</p>
+        <h5 class="card-title">{{ application.email }}</h5>
+        <p class="card-text">{{ application.phone }}</p>
+        <p class="card-text">{{ application.coverLetter }}</p>
       </div>
     </div>
   }

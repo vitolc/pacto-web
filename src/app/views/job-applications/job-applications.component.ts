@@ -20,6 +20,7 @@ import {RouteService} from "../../services/route.service";
 })
 export class JobApplicationsComponent implements OnInit {
 
+  public jobTitle: string = 'Título da Vaga';
   private _vacancyId!: number;
   public applications: any[] = [];
   public pagination = this._defaultPagination;
@@ -39,6 +40,7 @@ export class JobApplicationsComponent implements OnInit {
   ngOnInit(): void {
     this._vacancyId = this._activatedRoute.snapshot.params['vacancyId'];
     this._readQueryParams();
+    this._getJobTitle();
     console.log(this._vacancyId)
   }
 
@@ -49,13 +51,13 @@ export class JobApplicationsComponent implements OnInit {
           this.pagination = {...this.pagination, ...params};
           this.currentPage = Number(params?.page) + 1;
         }
-        this._getPaginated(this.pagination);
+        this._getPaginated(this._vacancyId, this.pagination);
       }
     });
   }
 
-  private _getPaginated(params: any): void {
-    this._jobApplicationService.getPaginated(params)
+  private _getPaginated(vacancyId: number, params: any): void {
+    this._jobApplicationService.getPaginated(vacancyId, params)
       .subscribe({
         next: (success: any) => {
           this.pagination = {
@@ -75,6 +77,7 @@ export class JobApplicationsComponent implements OnInit {
       });
   }
 
+
   private get _defaultPagination(): any {
     return {
       q: '',
@@ -92,6 +95,10 @@ export class JobApplicationsComponent implements OnInit {
       itemsPerPage
     };
     this._routeService.updateQueryParams(this.pagination);
+  }
+
+  private _getJobTitle(): void {
+    this.jobTitle = 'Desenvolvedor Front-End';
   }
 
   public paginate(page: any): void {

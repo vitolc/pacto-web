@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { environment } from "../../enviroments/enviroment.dev";
 import {HttpClient, HttpParams} from "@angular/common/http";
 import {Observable, take} from "rxjs";
-import {JobApplicationDto} from "../common/dtos/job-application-dto";
 
 @Injectable({
   providedIn: 'root'
@@ -25,9 +24,10 @@ export class JobApplicationsService {
       .pipe(take(1));
   }
 
-  public getPaginated(params: any): Observable<JobApplicationDto> {
-    return this.http.get<JobApplicationDto>(`${environment.API}/jobs/`, { params })
-      .pipe(take(1));
+  public getPaginated(vacancyId: number, params: any): Observable<any> {
+    return this.http.get<any>(`${environment.API}/api/job-applications/${vacancyId}`, {params, withCredentials: true
+    }).pipe(take(1));
   }
+
 
 }
