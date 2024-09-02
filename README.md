@@ -1,27 +1,56 @@
 # PactoWeb
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.3.0.
+Este projeto foi gerado com a [Angular CLI](https://github.com/angular/angular-cli) versão 17.3.0. Para o funcionamento completo, ele precisa estar integrado com o backend disponível no repositório:
 
-## Development server
+[Backend Pacto-API](https://github.com/vitolc/pacto-api.git)
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+## Pré-requisitos
 
-## Code scaffolding
+Antes de começar, certifique-se de ter:
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+- **Node/npm** instalado.
+- **Git** instalado para utilizar o comando `git clone` no terminal.
+- O **backend Pacto-API** rodando.
 
-## Build
+## Clonando o Repositório
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+Clone este repositório com o comando:
 
-## Running unit tests
+```bash
+git clone https://github.com/vitolc/pacto-web.git
+```
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+Alternativamente, você pode baixar o projeto em formato ZIP a partir do mesmo link.
 
-## Running end-to-end tests
+## Iniciando o Projeto
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+1. **Navegue até o diretório raiz** onde o projeto foi clonado.
+2. **Execute um dos seguintes comandos** no terminal:
 
-## Further help
+### Servidor de Desenvolvimento
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+Para iniciar o servidor de desenvolvimento, execute:
+
+```bash
+ng serve
+```
+
+Depois, abra seu navegador e acesse:
+
+```
+http://localhost:4200/
+```
+
+O aplicativo será recarregado automaticamente ao modificar qualquer arquivo de origem.
+
+### Build do Projeto
+
+Para construir o projeto, execute:
+
+```bash
+ng build
+```
+
+Os artefatos da construção serão armazenados no diretório `dist/`.
+
+---
