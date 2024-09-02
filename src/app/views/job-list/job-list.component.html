@@ -1,0 +1,27 @@
+<div class="d-flex flex-column align-items-center">
+  @if (canShowNewVacancyButton()) {
+    <button (click)="openCreateVacancyModal()" class="btn btn-success mb-3 mt-3">
+      Adicionar nova vaga
+    </button>
+  }
+  @for (vacancy of vacancies; track vacancy) {
+    <div class="card mb-3" style="width: 18rem;">
+      <div class="card-body">
+        <h5 class="card-title">{{ vacancy.title }}</h5>
+        <p class="card-text">{{ vacancy.description }}</p>
+        @if (canShowApplyButton()) {
+          <button (click)="openApplyModal(vacancy.id)" class="btn btn-primary">Candidatar-se</button>
+        } @else if (canShowSeeApplicationsButton()){
+          <button (click)="navigateJobApplicationsComponent(vacancy.id)" class="btn btn-primary">Ver Candidaturas</button>
+        }
+      </div>
+    </div>
+  }
+  <app-pagination
+    [show]="pagination.page === 0 || vacancies.length >= pagination.itemsPerPage || (vacancies.length < pagination.itemsPerPage && pagination.page > 0)"
+    [totalResults]="pagination.totalResults"
+    [itemsPerPage]="pagination.itemsPerPage"
+    [currentPage]="pagination.page + 1"
+    (itemsPerPageChangeEvent)="changeItemsPerPage($event)"
+    (paginateEvent)="paginate($event)"></app-pagination>
+</div>

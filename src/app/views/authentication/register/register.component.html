@@ -1,0 +1,29 @@
+<div class="container d-flex justify-content-center align-items-center min-vh-100">
+  <div class="card p-4" style="max-width: 400px; width: 100%;">
+    <h3 class="text-center mb-4">Registre-se na Pacto Vagas</h3>
+    <form (ngSubmit)="register()">
+      <div class="form-group mb-3">
+        <label for="username">Nome de Usuário</label>
+        <input type="text" id="username" class="form-control" [(ngModel)]="username" name="username" placeholder="Digite seu nome de usuário" required>
+      </div>
+      <div class="form-group mb-3">
+        <label for="email">Email</label>
+        <input type="email" id="email" class="form-control" [(ngModel)]="email" name="email" placeholder="Digite seu email" required>
+      </div>
+      <div class="form-group mb-3">
+        <label for="phone">Telefone</label>
+        <input type="tel" id="phone" class="form-control" [(ngModel)]="phone" name="phone" placeholder="Digite seu telefone" required>
+      </div>
+      <div class="form-group mb-4">
+        <label for="password">Senha</label>
+        <input type="password" id="password" class="form-control" [(ngModel)]="password" name="password" placeholder="Digite sua senha" required>
+      </div>
+      <div class="form-group mb-4">
+        <label for="confirmPassword">Confirmar Senha</label>
+        <input type="password" id="confirmPassword" class="form-control" [(ngModel)]="confirmPassword" name="confirmPassword" placeholder="Confirme sua senha" required>
+      </div>
+      <button type="submit" class="btn btn-primary w-100">Registrar</button>
+    </form>
+  </div>
+</div>
+
