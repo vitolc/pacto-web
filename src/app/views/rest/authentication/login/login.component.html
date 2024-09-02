@@ -1,0 +1,37 @@
+<div class="container d-flex justify-content-center align-items-center min-vh-100">
+  <div class="card p-4" style="max-width: 500px; width: 100%;">
+    <div class="text-center mb-4">
+      <img src="assets/images/pacto-logo.jpg" alt="Pacto-Soluções" class="img-fluid mb-3" style="max-height: 100px;">
+      <h1>Pacto-Soluções Vagas Internas</h1>
+      <p class="text-muted">Faça login para se candidatar a qualquer uma de nossas vagas e aproveitar todas as oportunidades disponíveis.</p>
+    </div>
+    <form #loginForm="ngForm" (ngSubmit)="login()" novalidate>
+      <div class="form-group mb-3">
+        <label for="email">Email <span class="text-danger">*</span></label>
+        <input type="email" id="email" class="form-control" [(ngModel)]="email" name="email" placeholder="Digite seu email" required>
+      </div>
+      <div class="form-group mb-4 position-relative">
+        <label for="password">Senha <span class="text-danger">*</span></label>
+        <div class="input-group">
+          <input [type]="isPasswordVisible ? 'text' : 'password'" id="password" class="form-control" [(ngModel)]="password" name="password" placeholder="Digite sua senha" required>
+          <button type="button" class="btn btn-outline-secondary" (click)="togglePasswordVisibility()">
+            @if (isPasswordVisible) {
+              Esconder
+            } @else {
+              Mostrar
+            }
+          </button>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary w-100" [disabled]="!loginForm.form.valid || isLoading">
+        @if (isLoading) {
+          <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+        }
+        Entrar
+      </button>
+    </form>
+    <div class="mt-3 text-center">
+      <small>Não tem uma conta? <a href="/register" class="text-decoration-underline">Registrar-se</a></small>
+    </div>
+  </div>
+</div>

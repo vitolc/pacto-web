@@ -26,32 +26,6 @@ export class RouteService {
         }
     }
 
-    goByUrl(url: string) {
-        // noinspection JSIgnoredPromiseFromCall
-        this.router.navigateByUrl(url);
-    }
-
-    reload() {
-        location.reload();
-    }
-
-    clearQueryParams(qp = {}) {
-        this.router.navigate([], {queryParams: {...qp}, queryParamsHandling: 'merge'});
-    }
-
-    clearAllQueryParams() {
-        this.router.navigate([], {queryParams: {}});
-    }
-
-    clearAllQueryParamsExcept(qp = {}) {
-        this.clearAllQueryParams();
-        this.updateQueryParams(qp);
-    }
-
-    gotoExternalLink(_link: string): void {
-        window.open(_link, '_blank');
-    }
-
     updateQueryParams(queryParams: any, complete = () => {}) {
         this.router.navigate(
             [],
@@ -60,23 +34,6 @@ export class RouteService {
                 queryParams,
                 queryParamsHandling: 'merge', // remove to replace all query params by provided
             }).then(r => {}).catch(err => console.error(err)).finally(() => complete());
-    }
-
-    joinRoutes(arr: string[]): string {
-        return '/' + arr.join('/');
-    }
-
-    joinRoutesWithPathVariables(routes: string[], pathVariables: object = {}): string {
-        // Get to string
-        let path: string = routes.join('/');
-
-        // Replace paths variable
-        Object.keys(pathVariables).forEach(key => {
-            // @ts-ignore
-          path = path.replace(':'.concat(key), pathVariables[key]);
-        });
-
-        return '/' + path;
     }
 }
 

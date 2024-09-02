@@ -1,0 +1,20 @@
+<div class="modal-header">
+  <h4 class="modal-title">Criar Nova Vaga</h4>
+  <button type="button" class="btn-close" aria-label="Close" (click)="dismissModal()"></button>
+</div>
+<div class="modal-body">
+  <form (ngSubmit)="onSubmit()">
+    <div class="mb-4">
+      <label for="title" class="form-label">Título <span class="text-danger">*</span></label>
+      <input type="text" id="title" class="form-control" [(ngModel)]="vacancy.title" name="title" required placeholder="Digite o título da vaga">
+    </div>
+    <div class="mb-4">
+      <label for="description" class="form-label">Descrição <span class="text-danger">*</span></label>
+      <textarea id="description" class="form-control" [(ngModel)]="vacancy.description" name="description" required rows="4" placeholder="Digite a descrição da vaga"></textarea>
+    </div>
+    <div class="d-flex justify-content-end">
+      <button type="submit" class="btn btn-primary me-2" [disabled]="!vacancy.title || !vacancy.description">Criar</button>
+      <button type="button" class="btn btn-secondary" (click)="dismissModal()">Cancelar</button>
+    </div>
+  </form>
+</div>

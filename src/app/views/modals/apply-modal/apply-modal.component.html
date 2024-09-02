@@ -1,0 +1,25 @@
+<div class="modal-body">
+  <form (ngSubmit)="onSubmit()" class="application-form">
+    <div class="mb-4">
+      <label for="name" class="form-label">Nome <span class="text-danger">*</span></label>
+      <input type="text" id="name" class="form-control" [(ngModel)]="application.name" name="name" required placeholder="Digite seu nome">
+    </div>
+    <div class="mb-4">
+      <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
+      <input type="email" id="email" class="form-control" [(ngModel)]="application.email" name="email" required placeholder="Digite seu email">
+    </div>
+    <div class="mb-4">
+      <label for="phone" class="form-label">Telefone <span class="text-danger">*</span></label>
+      <input type="tel" id="phone" class="form-control" [(ngModel)]="application.phone" name="phone" required placeholder="Digite seu telefone"
+             (input)="restrictToNumbers($event)">
+    </div>
+    <div class="mb-4">
+      <label for="coverLetter" class="form-label">Carta de Apresentação <span class="text-danger">*</span></label>
+      <textarea id="coverLetter" class="form-control" [(ngModel)]="application.coverLetter" name="coverLetter" required rows="4" placeholder="Digite sua carta de apresentação"></textarea>
+    </div>
+    <div class="d-flex justify-content-end">
+      <button type="submit" class="btn btn-primary me-2" [disabled]="!application.name || !application.email || !application.phone || !application.coverLetter">Enviar</button>
+      <button type="button" class="btn btn-secondary" (click)="dismissModal()">Cancelar</button>
+    </div>
+  </form>
+</div>

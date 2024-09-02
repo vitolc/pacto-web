@@ -1,13 +1,14 @@
-import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
+import {Component, HostListener, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from "@angular/router";
 import {HttpErrorResponse} from "@angular/common/http";
-import {Strings} from "../../common/function.common";
+import {Strings} from "../../../common/function.common";
 import isObjectEmpty = Strings.isObjectEmpty;
-import {UserDto} from "../../common/dtos/user-dto";
-import {JobApplicationsService} from "../../services/job-applications.service";
-import {AlertService} from "../../services/alert.service";
-import {AppPaginationComponent} from "../../common/app-pagination/app-pagination.component";
-import {RouteService} from "../../services/route.service";
+import {UserDto} from "../../../common/dtos/user-dto";
+import {JobApplicationsService} from "../../../services/job-applications.service";
+import {AlertService} from "../../../services/alert.service";
+import {AppPaginationComponent} from "../../../common/app-pagination/app-pagination.component";
+import {RouteService} from "../../../services/route.service";
+import {UserService} from "../../../services/user.service";
 
 @Component({
   selector: 'app-job-applications',
@@ -27,21 +28,25 @@ export class JobApplicationsComponent implements OnInit {
   public currentPage: number = 1;
   public loading = true;
   public paginationLoading = true;
-  public userInfo?: UserDto;
+
 
   constructor(
     private _activatedRoute: ActivatedRoute,
     private _jobApplicationService: JobApplicationsService,
     private _alertService: AlertService,
-    private _routeService: RouteService
+    private _routeService: RouteService,
+    private _userService: UserService,
+    private _router: Router
   ) {
   }
 
   ngOnInit(): void {
+    if (!this._userService.isAdmin()) {
+      this._router.navigate(['/jobs']);
+      return
+    }
     this._vacancyId = this._activatedRoute.snapshot.params['vacancyId'];
     this._readQueryParams();
-    this._getJobTitle();
-    console.log(this._vacancyId)
   }
 
   private _readQueryParams() {
@@ -97,14 +102,10 @@ export class JobApplicationsComponent implements OnInit {
     this._routeService.updateQueryParams(this.pagination);
   }
 
-  private _getJobTitle(): void {
-    this.jobTitle = 'Desenvolvedor Front-End';
-  }
 
   public paginate(page: any): void {
     this.pagination.page = page - 1;
     this._routeService.updateQueryParams(this.pagination);
   }
-
 
 }

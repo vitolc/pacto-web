@@ -1,8 +1,10 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {JobApplicationsService} from "../../services/job-applications.service";
-import {UserService} from "../../services/user.service";
+import {JobApplicationsService} from "../../../services/job-applications.service";
+import {UserService} from "../../../services/user.service";
 import {FormsModule} from "@angular/forms";
 import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
+import {Strings} from "../../../common/function.common";
+import isObjectEmpty = Strings.isObjectEmpty;
 
 @Component({
   selector: 'app-apply-modal',
@@ -29,29 +31,24 @@ export class ApplyModalComponent implements OnInit {
   }
 
   loadUserInfo(): void {
-    this._userService.getUserInfo().subscribe({
-      next: user => {
-        console.log('Dados do usuário:', user);
-        this.application.name = user.data.name;
-        this.application.email = user.data.email;
-        this.application.phone = user.data.phone;
-      },
-      error: error => {
-        console.error('Erro ao carregar informações do usuário', error);
-      }
-    })
+    const user = this._userService.userInfo;
+    if (isObjectEmpty(user)) {
+      return;
+    }
+    this.application.name = user!.name;
+    this.application.email = user!.email;
+    this.application.phone = user!.phone;
   }
 
-  onSubmit(): void {
-    this._jobApplicationsService.apply(this.application,  this.vacancyId).subscribe(
-      response => {
-        console.log('Candidatura enviada com sucesso!', response);
+  public onSubmit(): void {
+    this._jobApplicationsService.apply(this.application, this.vacancyId).subscribe({
+      next: (response) => {
         this.closeModal();
       },
-      error => {
+      error: (error) => {
         console.error('Erro ao enviar a candidatura', error);
-      }
-    );
+      },
+    });
   }
 
   dismissModal() {
@@ -60,5 +57,10 @@ export class ApplyModalComponent implements OnInit {
 
   closeModal() {
     this._activeModal.close();
+  }
+
+  restrictToNumbers(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    input.value = input.value.replace(/[^0-9]/g, '');
   }
 }

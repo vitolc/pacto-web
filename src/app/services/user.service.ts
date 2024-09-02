@@ -1,21 +1,36 @@
-import { Injectable } from '@angular/core';
-import { environment } from "../../enviroments/enviroment.dev";
-import { HttpClient } from "@angular/common/http";
-import { Observable } from "rxjs";
+import {Injectable} from '@angular/core';
 import {UserDto} from "../common/dtos/user-dto";
-import {ResponseBody} from "../common/dtos/response-body";
+import {UserRole} from "../common/enum/user-role";
+
+import {Strings} from "../common/function.common";
+import {SessionStorage} from "ngx-webstorage";
+import isObjectEmpty = Strings.isObjectEmpty;
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
-  private readonly API = `${environment.API}/api/user`;
+  @SessionStorage("user_info")
+  private _userInfo?: UserDto;
 
-  constructor(protected http: HttpClient) {
+  isAdmin(): boolean {
+    if (isObjectEmpty(this._userInfo)) return false
+    return this._userInfo?.role === UserRole.ADMIN
   }
 
-  getUserInfo() {
-    return this.http.get<ResponseBody<UserDto>>(`${this.API}/me`, { withCredentials: true });
+  isUser(): boolean {
+    if (isObjectEmpty(this._userInfo)) return false
+    return this._userInfo?.role === UserRole.USER
+  }
+
+  public get userInfo(): UserDto | undefined {
+    return this._userInfo;
+  }
+
+  public set userInfo(userInfo: UserDto | undefined) {
+    this._userInfo = userInfo;
   }
 }
+
+

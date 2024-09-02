@@ -1,19 +1,17 @@
 import {Component, OnInit} from '@angular/core';
-import {JobVacanciesService} from "../../services/job-vacancies.service";
-import {AlertService} from "../../services/alert.service";
+import {JobVacanciesService} from "../../../services/job-vacancies.service";
+import {AlertService} from "../../../services/alert.service";
 import {HttpErrorResponse} from "@angular/common/http";
 import {ActivatedRoute} from "@angular/router";
-import {Strings} from "../../common/function.common";
+import {Strings} from "../../../common/function.common";
 import {NgForOf, NgIf} from "@angular/common";
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {ApplyModalComponent} from '../apply-modal/apply-modal.component';
-import {CreateVacancyModalComponent} from "../create-vacancy-modal/create-vacancy-modal.component";
-import {UserService} from "../../services/user.service";
-import {UserDto} from "../../common/dtos/user-dto";
-import {UserRole} from "../../common/enum/user-role";
+import {ApplyModalComponent} from '../../modals/apply-modal/apply-modal.component';
+import {CreateVacancyModalComponent} from "../../modals/create-vacancy-modal/create-vacancy-modal.component";
+import {UserService} from "../../../services/user.service";
 import isObjectEmpty = Strings.isObjectEmpty;
-import {AppPaginationComponent} from "../../common/app-pagination/app-pagination.component";
-import {RouteService} from "../../services/route.service";
+import {AppPaginationComponent} from "../../../common/app-pagination/app-pagination.component";
+import {RouteService} from "../../../services/route.service";
 
 @Component({
   selector: 'app-job-list',
@@ -33,7 +31,6 @@ export class JobListComponent implements OnInit {
   public currentPage: number = 1;
   public loading = true;
   public paginationLoading = true;
-  public userInfo?: UserDto;
 
   constructor(
     private _jobVacanciesService: JobVacanciesService,
@@ -46,9 +43,9 @@ export class JobListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this._getUserInfo();
     this._readQueryParams();
   }
+
   private _readQueryParams() {
     this._activatedRoute.queryParams.subscribe({
       next: (params: any) => {
@@ -98,35 +95,23 @@ export class JobListComponent implements OnInit {
 
   openCreateVacancyModal() {
     const modalRef = this.modalService.open(CreateVacancyModalComponent);
-    modalRef.result.then(() => this._readQueryParams(), () => {});
-  }
-
-  private _getUserInfo(): void {
-    this._userService.getUserInfo().subscribe({
-      next: (response) => {
-        this.userInfo = response.data;
-      },
-      error: (error: HttpErrorResponse) => {
-        console.error('Failed to fetch user info', error);
-      }
+    modalRef.result.then(() => this._readQueryParams(), () => {
     });
   }
 
-  navigateJobApplicationsComponent(vacancyId: number){
+  navigateJobApplicationsComponent(vacancyId: number) {
     this._routeService.go([`/jobs/${vacancyId}`])
   }
 
   isAdmin(): boolean {
-    if (isObjectEmpty(this.userInfo)) return false
-    return this.userInfo?.role === UserRole.ADMIN
+    return this._userService.isAdmin();
   }
 
   canShowSeeApplicationsButton(): boolean {
     return this.isAdmin()
   }
   canShowApplyButton(): boolean {
-    if (isObjectEmpty(this.userInfo)) return false
-    return this.userInfo?.role === UserRole.USER
+    return this._userService.isUser();
   }
 
   canShowNewVacancyButton(): boolean {
@@ -147,4 +132,5 @@ export class JobListComponent implements OnInit {
     this.pagination.page = page - 1;
     this._routeService.updateQueryParams(this.pagination);
   }
+
 }

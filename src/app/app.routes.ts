@@ -1,8 +1,8 @@
 import {RouterModule, Routes} from '@angular/router';
-import {JobListComponent} from "./views/job-list/job-list.component";
-import {LoginComponent} from "./views/authentication/login/login.component";
-import {RegisterComponent} from "./views/authentication/register/register.component";
-import {JobApplicationsComponent} from "./views/job-applications/job-applications.component";
+import {JobListComponent} from "./views/rest/job-list/job-list.component";
+import {LoginComponent} from "./views/rest/authentication/login/login.component";
+import {RegisterComponent} from "./views/rest/authentication/register/register.component";
+import {JobApplicationsComponent} from "./views/rest/job-applications/job-applications.component";
 
 export const routes: Routes = [
   {

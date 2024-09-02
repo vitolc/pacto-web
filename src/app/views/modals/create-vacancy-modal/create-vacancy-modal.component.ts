@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import {JobApplicationsService} from "../../services/job-applications.service";
+import {JobApplicationsService} from "../../../services/job-applications.service";
 import {FormsModule} from "@angular/forms";
 
 @Component({
@@ -23,16 +23,16 @@ export class CreateVacancyModalComponent {
     private jobApplicationsService: JobApplicationsService
   ) {}
 
-  onSubmit(): void {
-    this.jobApplicationsService.createVacancy(this.vacancy).subscribe(
-      response => {
+  public onSubmit(): void {
+    this.jobApplicationsService.createVacancy(this.vacancy).subscribe({
+      next: (response) => {
         console.log('Vaga criada com sucesso!', response);
         this.activeModal.close();
       },
-      error => {
+      error: (error) => {
         console.error('Erro ao criar vaga', error);
-      }
-    );
+      },
+    });
   }
 
   dismissModal(): void {

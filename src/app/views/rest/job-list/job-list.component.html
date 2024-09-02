@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pacto-Soluções Vagas Internas</title>
+  <link rel="stylesheet" href="job-list.component.css">
+</head>
+<body>
+  @if (isAdmin()) {
+    <div class="sidebar">
+      <div class="sidebar-header">
+        <img src="assets/images/pacto-logo.jpg" alt="Logo Pacto-Soluções">
+        <h5>Pacto-Soluções</h5>
+      </div>
+      @if (canShowNewVacancyButton()) {
+        <button (click)="openCreateVacancyModal()" class="btn btn-primary">
+          Adicionar nova vaga
+        </button>
+      }
+    </div>
+  }
+
+<div class="main-content">
+  <div class="container">
+    <div class="intro-section">
+      <img src="assets/images/pacto-logo.jpg" alt="Pacto-Soluções">
+      <div>
+        <h1 class="fw-bold">Pacto-Soluções Vagas Internas</h1>
+        <p class="text-muted">
+          Aqui você pode ver todas as vagas disponíveis na Pacto-Soluções. Caso tenha interesse em se candidatar,
+          verifique as opções de candidatura e aproveite as oportunidades que mais se adequam ao seu perfil.
+        </p>
+      </div>
+    </div>
+    <div class="d-flex flex-column align-items-center">
+      @if (vacancies.length === 0) {
+        <div class="alert alert-info" role="alert">
+          Não há vagas disponíveis no momento.
+        </div>
+      } @else {
+        @for (vacancy of vacancies; track vacancy) {
+          <div class="card mb-3 col-12 col-sm-10 col-md-8 col-lg-6">
+            <div class="card-body">
+              <h5 class="card-title">{{ vacancy.title }}</h5>
+              <p class="card-text">{{ vacancy.description }}</p>
+              @if (canShowApplyButton()) {
+                <button (click)="openApplyModal(vacancy.id)" class="btn btn-primary">Candidatar-se</button>
+              } @else if (canShowSeeApplicationsButton()) {
+                <button (click)="navigateJobApplicationsComponent(vacancy.id)" class="btn btn-primary">Ver Candidaturas</button>
+              } @else {
+                <div class="alert alert-primary" role="alert">
+                  <strong><a href="/login" class="alert-link text-decoration-underline">Logar</a> para se candidatar a uma vaga.</strong>
+                </div>
+              }
+            </div>
+          </div>
+        }
+      }
+      <app-pagination
+        [show]="pagination.page === 0 || vacancies.length >= pagination.itemsPerPage || (vacancies.length < pagination.itemsPerPage && pagination.page > 0)"
+        [totalResults]="pagination.totalResults"
+        [itemsPerPage]="pagination.itemsPerPage"
+        [currentPage]="pagination.page + 1"
+        (itemsPerPageChangeEvent)="changeItemsPerPage($event)"
+        (paginateEvent)="paginate($event)"></app-pagination>
+    </div>
+  </div>
+</div>
+</body>
+</html>

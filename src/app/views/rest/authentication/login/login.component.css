@@ -1,0 +1,35 @@
+.input-group {
+  display: flex;
+  align-items: center;
+}
+
+.input-group .form-control {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  height: calc(2.5rem + 2px);
+}
+
+.input-group .btn {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  padding: 0.375rem 0.75rem;
+  font-size: 0.875rem;
+  margin-left: -1px;
+  height: calc(2.5rem + 2px);
+  line-height: 1.5;
+  display: flex;
+  align-items: center;
+}
+
+.btn-outline-secondary {
+  border: 1px solid #ced4da;
+  color: #6c757d;
+  background-color: transparent;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
+}
+
+.btn-outline-secondary:hover {
+  color: #495057;
+  background-color: #e9ecef;
+  border-color: #ced4da;
+}
