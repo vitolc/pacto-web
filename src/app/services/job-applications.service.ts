@@ -25,7 +25,7 @@ export class JobApplicationsService {
   }
 
   public getPaginated(vacancyId: number, params: any): Observable<any> {
-    return this.http.get<any>(`${environment.API}/api/job-applications/${vacancyId}`, {params, withCredentials: true
+    return this.http.get<any>(`${environment.API}/api/job-applications/by-id/${vacancyId}`, {params, withCredentials: true
     }).pipe(take(1));
   }
 

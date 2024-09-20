@@ -7,19 +7,24 @@
   <link rel="stylesheet" href="job-list.component.css">
 </head>
 <body>
-  @if (isAdmin()) {
+
     <div class="sidebar">
       <div class="sidebar-header">
         <img src="assets/images/pacto-logo.jpg" alt="Logo Pacto-Soluções">
         <h5>Pacto-Soluções</h5>
       </div>
+      @if (canShowMyApplicationsButton()){
+        <button (click)="navigateMyApplicationsComponent()" class="btn btn-primary">
+          Minhas Candidaturas
+        </button>
+      }
       @if (canShowNewVacancyButton()) {
         <button (click)="openCreateVacancyModal()" class="btn btn-primary">
           Adicionar nova vaga
         </button>
       }
     </div>
-  }
+
 
 <div class="main-content">
   <div class="container">

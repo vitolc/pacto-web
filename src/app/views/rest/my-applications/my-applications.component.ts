@@ -1,41 +1,36 @@
 import {Component, OnInit} from '@angular/core';
-import {JobVacanciesService} from "../../../services/job-vacancies.service";
-import {AlertService} from "../../../services/alert.service";
 import {HttpErrorResponse} from "@angular/common/http";
 import {ActivatedRoute} from "@angular/router";
-import {Strings} from "../../../common/function.common";
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {ApplyModalComponent} from '../../modals/apply-modal/apply-modal.component';
-import {CreateVacancyModalComponent} from "../../modals/create-vacancy-modal/create-vacancy-modal.component";
-import {UserService} from "../../../services/user.service";
-import isObjectEmpty = Strings.isObjectEmpty;
-import {AppPaginationComponent} from "../../../common/app-pagination/app-pagination.component";
+import {AlertService} from "../../../services/alert.service";
 import {RouteService} from "../../../services/route.service";
+import {Strings} from "../../../common/function.common";
+import isObjectEmpty = Strings.isObjectEmpty;
+import {MyApplicationsService} from "../../../services/my-applications.service";
+import {AppPaginationComponent} from "../../../common/app-pagination/app-pagination.component";
 
 @Component({
-  selector: 'app-job-list',
+  selector: 'app-my-applications',
   standalone: true,
   imports: [
     AppPaginationComponent
   ],
-  templateUrl: './job-list.component.html',
-  styleUrl: './job-list.component.css'
+  templateUrl: './my-applications.component.html',
+  styleUrl: './my-applications.component.css'
 })
-export class JobListComponent implements OnInit {
+export class MyApplicationsComponent implements OnInit{
 
-  public vacancies: any[] = [];
+  public applications: any[] = [];
   public pagination = this._defaultPagination;
   public currentPage: number = 1;
   public loading = true;
   public paginationLoading = true;
+  public showDetailsMap: { [key: number]: boolean } = {};
 
   constructor(
-    private _jobVacanciesService: JobVacanciesService,
-    private _alertService: AlertService,
     private _activatedRoute: ActivatedRoute,
-    private _userService: UserService,
-    private modalService: NgbModal,
-    private _routeService: RouteService
+    private _myApplicationsService: MyApplicationsService,
+    private _alertService: AlertService,
+    private _routeService: RouteService,
   ) {
   }
 
@@ -56,7 +51,7 @@ export class JobListComponent implements OnInit {
   }
 
   private _getPaginated(params: any): void {
-    this._jobVacanciesService.getPaginated(params)
+    this._myApplicationsService.getPaginated(params)
       .subscribe({
         next: (success: any) => {
           this.pagination = {
@@ -65,10 +60,11 @@ export class JobListComponent implements OnInit {
             totalResults: success['data']['totalResults'],
             totalPages: success['data']['totalPages']
           };
-          this.vacancies = success['data']['result'];
+          this.applications = success['data']['result'];
           this.loading = false;
           this.paginationLoading = false;
         }, error: ({error}: HttpErrorResponse) => {
+          console.error('Error details:', error);
           this._alertService.errorToast(error);
           this.loading = false;
           this.paginationLoading = false;
@@ -85,41 +81,6 @@ export class JobListComponent implements OnInit {
     };
   }
 
-  openApplyModal(vacancyId: string): void {
-    const modalRef = this.modalService.open(ApplyModalComponent);
-    modalRef.componentInstance.vacancyId = vacancyId;
-  }
-
-  openCreateVacancyModal() {
-    const modalRef = this.modalService.open(CreateVacancyModalComponent);
-    modalRef.result.then(() => this._readQueryParams(), () => {
-    });
-  }
-
-  navigateJobApplicationsComponent(vacancyId: number) {
-    this._routeService.go([`/jobs/${vacancyId}`])
-  }
-
-  navigateMyApplicationsComponent() {
-    this._routeService.go([`/my-applications`])
-  }
-
-  isAdmin(): boolean {
-    return this._userService.isAdmin();
-  }
-
-  canShowSeeApplicationsButton(): boolean {
-    return this.isAdmin()
-  }
-  canShowApplyButton(): boolean {
-    return this._userService.isUser();
-  }
-  canShowNewVacancyButton(): boolean {
-    return this.isAdmin()
-  }
-  canShowMyApplicationsButton(): boolean {
-    return this._userService.isUser()
-  }
 
   public changeItemsPerPage(itemsPerPage: any): void {
     this.pagination = {
@@ -131,9 +92,18 @@ export class JobListComponent implements OnInit {
     this._routeService.updateQueryParams(this.pagination);
   }
 
+
   public paginate(page: any): void {
     this.pagination.page = page - 1;
     this._routeService.updateQueryParams(this.pagination);
+  }
+
+  public toggleDetails(applicationId: number): void {
+    this.showDetailsMap[applicationId] = !this.showDetailsMap[applicationId]; // Alterna o estado
+  }
+
+  public showDetails(applicationId: number): boolean {
+    return !!this.showDetailsMap[applicationId]; // Retorna o estado atual
   }
 
 }
